@@ -32,6 +32,9 @@ void ui_event_Switch1(lv_event_t * e);
 extern lv_obj_t * ui_Switch1;
 extern lv_obj_t * ui_Panel1;
 extern lv_obj_t * ui_Label1;
+extern lv_obj_t * ui_Label2;
+extern lv_obj_t * ui_Panel2;
+extern lv_obj_t * ui_Label3;
 // CUSTOM VARIABLES
 
 // EVENTS

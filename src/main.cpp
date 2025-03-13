@@ -64,6 +64,9 @@ void setup() {
 
     ui_init();
 
+    // Set the IP address text in Label2
+    lv_label_set_text(ui_Label2, esp8266IP);
+
     // Attach event callback to switch
     lv_obj_add_event_cb(ui_Switch1, switch_event_cb, LV_EVENT_VALUE_CHANGED, NULL);
 }

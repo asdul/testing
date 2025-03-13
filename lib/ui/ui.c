@@ -16,6 +16,9 @@ void ui_event_Switch1(lv_event_t * e);
 lv_obj_t * ui_Switch1;
 lv_obj_t * ui_Panel1;
 lv_obj_t * ui_Label1;
+lv_obj_t * ui_Label2;
+lv_obj_t * ui_Panel2;
+lv_obj_t * ui_Label3;
 // CUSTOM VARIABLES
 
 // EVENTS
@@ -25,7 +28,7 @@ lv_obj_t * ui____initial_actions0;
 
 ///////////////////// TEST LVGL SETTINGS ////////////////////
 #if LV_COLOR_DEPTH != 16
-    #error "LV_COLOR_DEPTH should be 32bit to match SquareLine Studio's settings"
+    #error "LV_COLOR_DEPTH should be 16bit to match SquareLine Studio's settings"
 #endif
 
 ///////////////////// ANIMATIONS ////////////////////
