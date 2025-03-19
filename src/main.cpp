@@ -5,6 +5,7 @@
 
 #include <WiFi.h>
 #include <HTTPClient.h>
+#include <ArduinoJson.h>  // Add this line - you may need to install ArduinoJson library
 
 #define SDA_PIN 21
 #define SCL_PIN 22
@@ -14,6 +15,7 @@
 const char* ssid = "huawei";
 const char* password = "s12345678";
 const char* esp8266IP = "http://192.168.8.198/win"; // ESP8266 IP address
+const char* openWeatherMapAPI = "http://api.openweathermap.org/data/2.5/weather?q=Al%20Qatif,sa&units=metric&APPID=c51346e22d798a475b744ae5a939d0f6";
 
 auto lv_last_tick = millis();
 
@@ -50,9 +52,40 @@ void switch_event_cb(lv_event_t * e) {
     toggleLED();
 }
 
+// Add this function to fetch temperature
+void updateTemperature() {
+    if (WiFi.status() == WL_CONNECTED) {
+        HTTPClient http;
+        http.begin(openWeatherMapAPI);
+        
+        int httpCode = http.GET();
+        if (httpCode > 0) {
+            String payload = http.getString();
+            
+            DynamicJsonDocument doc(1024);
+            DeserializationError error = deserializeJson(doc, payload);
+            
+            if (!error) {
+                float temp = doc["main"]["temp"].as<float>();
+                String displayTemp = String(temp, 1) + "°C";  // Show one decimal place
+                lv_label_set_text(ui_Label3, displayTemp.c_str());
+                Serial.println("Temperature updated: " + displayTemp);
+            } else {
+                Serial.println("JSON parsing failed");
+                Serial.println("Error: " + String(error.c_str()));
+                Serial.println("Received payload: " + payload);
+            }
+        } else {
+            Serial.println("HTTP GET failed with code: " + String(httpCode));
+        }
+        http.end();
+    }
+}
+
 void setup() {
     Serial.begin(115200);
     smartdisplay_init();
+    ui_init();
 
     // Connect to WiFi
     WiFi.begin(ssid, password);
@@ -62,20 +95,33 @@ void setup() {
     }
     Serial.println("Connected to WiFi!");
 
-    ui_init();
 
     // Set the IP address text in Label2
     lv_label_set_text(ui_Label2, esp8266IP);
 
     // Attach event callback to switch
     lv_obj_add_event_cb(ui_Switch1, switch_event_cb, LV_EVENT_VALUE_CHANGED, NULL);
+    
+   
+
+
+    // Initial temperature update with delay to ensure stable connection
+    delay(1000);
+    updateTemperature();
 }
 
 void loop() {
+    static unsigned long lastUpdate = 0;
     auto const now = millis();
     
     // Update LVGL
     lv_tick_inc(now - lv_last_tick);
     lv_last_tick = now;
     lv_timer_handler();
+
+    // Update temperature every 10 minutes instead of 5
+    if (now - lastUpdate >= 600000) {  // 10 minutes = 600000 milliseconds
+        updateTemperature();
+        lastUpdate = now;
+    }
 }
