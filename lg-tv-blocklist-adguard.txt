@@ -1,0 +1,56 @@
+! ============================================================
+!  LG webOS TV - ad / recommendation / telemetry blocklist
+!  Format : AdGuard Home / AdBlock DNS syntax  (||domain^)
+!  Target : LG TV at 192.168.8.142
+!  Built  : 2026-11-11
+!
+!  Use this file in:
+!    - AdGuard Home  -> Filters -> DNS blocklists -> Add list
+!    - AdGuard DNS   -> Denylist (paste contents)
+!    - NextDNS       -> Denylist (paste contents)
+!
+!  Do NOT block lge.com, ngfts.lge.com, su.lge.com or
+!  lgappstv.com here - firmware updates and the app store.
+! ============================================================
+
+
+! ------------------------------------------------------------
+!  TIER 1 - ADS & RECOMMENDATIONS  (safe)
+! ------------------------------------------------------------
+||ad.lgappstv.com^
+||lgsmartad.com^
+||eic.ads.lgtvcommon.com^
+||us.recommend.lgtvcommon.com^
+||us.nudge.lgtvcommon.com^
+||us.homeprv.lgtvcommon.com^
+||smartclip.com^
+||smartclip.net^
+||yumenetworks.com^
+||lgad.cjpowercast.com.edgesuite.net^
+
+
+! ------------------------------------------------------------
+!  TIER 2 - ANALYTICS & TELEMETRY  (safe)
+! ------------------------------------------------------------
+||ibis.lgappstv.com^
+||aic-ngfts.lge.com^
+||aic.cdpbeacon.lgtvcommon.com^
+||aic.cdpsvc.lgtvcommon.com^
+||aic.rdl.lgtvcommon.com^
+||us.cdpbeacon.lgtvcommon.com^
+||us.cdpsvc.lgtvcommon.com^
+||us.rdl.lgtvcommon.com^
+||us.service.lgtvcommon.com^
+
+
+! ------------------------------------------------------------
+!  TIER 3 - ACR / CONTENT RECOGNITION  (test apps after)
+! ------------------------------------------------------------
+||lgtvsdp.com^
+
+
+! ------------------------------------------------------------
+!  TIER 4 - OPTIONAL AGGRESSIVE  (off by default)
+!  Blocks all of lgtvcommon.com; may blank Home previews.
+! ------------------------------------------------------------
+! ||lgtvcommon.com^

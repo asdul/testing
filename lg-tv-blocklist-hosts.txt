@@ -1,0 +1,97 @@
+# ============================================================
+#  LG webOS TV - ad / recommendation / telemetry blocklist
+#  Format : hosts file  (Pi-hole, dnsmasq, router DNS filters)
+#  Target : LG TV at 192.168.8.142
+#  Built  : 2026-11-11
+#
+#  Source basis:
+#    - Perflyst/PiHoleBlocklist  SmartTV / SmartTV-AGH
+#    - CleanYourTV-WebOS debloat documentation
+#
+#  READ THE TIERS. Tier 1 is safe. Tier 2 is safe. Tier 3 is
+#  the ACR kill-switch and can break some app content feeds.
+#
+#  DO NOT add lge.com, ngfts.lge.com, su.lge.com or
+#  lgappstv.com to this file - those carry firmware updates
+#  and the app store.
+# ============================================================
+
+
+# ------------------------------------------------------------
+#  TIER 1 - ADS & RECOMMENDATIONS
+#  Removes ad rows, sponsored tiles, home-screen promos.
+#  Safe: none of these serve firmware, apps, or playback.
+# ------------------------------------------------------------
+
+# LG ad engine + smart-ad servers
+0.0.0.0 ad.lgappstv.com
+0.0.0.0 lgsmartad.com
+0.0.0.0 us.lgsmartad.com
+0.0.0.0 us.ad.lgsmartad.com
+0.0.0.0 nl.ad.lgsmartad.com
+0.0.0.0 us.info.lgsmartad.com
+0.0.0.0 nl.info.lgsmartad.com
+0.0.0.0 jp.info.lgsmartad.com
+0.0.0.0 eic.ads.lgtvcommon.com
+
+# Home-screen recommendations / nudges / previews
+0.0.0.0 us.recommend.lgtvcommon.com
+0.0.0.0 us.nudge.lgtvcommon.com
+0.0.0.0 us.homeprv.lgtvcommon.com
+
+# SmartClip ad network
+0.0.0.0 smartclip.com
+0.0.0.0 smartclip.net
+0.0.0.0 cdn.smartclip.net
+0.0.0.0 cdn.hbbtv.smartclip.net
+0.0.0.0 scheduler.hbbtv.smartclip.net
+0.0.0.0 stats.hbbtv.smartclip.net
+0.0.0.0 stats-irl.sxp.smartclip.net
+
+# Other LG ad/telemetry networks
+0.0.0.0 yumenetworks.com
+0.0.0.0 lgad.cjpowercast.com.edgesuite.net
+
+
+# ------------------------------------------------------------
+#  TIER 2 - ANALYTICS & TELEMETRY
+#  Stops usage reporting. Keep this if any app misbehaves,
+#  drop it back to Tier 1 only.
+# ------------------------------------------------------------
+
+0.0.0.0 ibis.lgappstv.com
+0.0.0.0 us.ibs.lgappstv.com
+0.0.0.0 aic-ngfts.lge.com
+0.0.0.0 aic.cdpbeacon.lgtvcommon.com
+0.0.0.0 us.cdpbeacon.lgtvcommon.com
+0.0.0.0 aic.cdpsvc.lgtvcommon.com
+0.0.0.0 us.cdpsvc.lgtvcommon.com
+0.0.0.0 aic.rdl.lgtvcommon.com
+0.0.0.0 us.rdl.lgtvcommon.com
+0.0.0.0 us.service.lgtvcommon.com
+
+
+# ------------------------------------------------------------
+#  TIER 3 - ACR (Automatic Content Recognition)
+#  This is the "TV watches what you watch" service.
+#  Comment out this whole tier if an app's feed or
+#  recommendations stop loading and you want to re-test.
+#
+#  smartshare.lgtvsdp.com is deliberately NOT blocked -
+#  it is local phone-to-TV screen sharing.
+# ------------------------------------------------------------
+
+0.0.0.0 lgtvsdp.com
+0.0.0.0 us.lgtvsdp.com
+0.0.0.0 jp.lgtvsdp.com
+0.0.0.0 us.rdx2.lgtvsdp.com
+0.0.0.0 jp.rdx2.lgtvsdp.com
+
+
+# ------------------------------------------------------------
+#  TIER 4 - OPTIONAL AGGRESSIVE (off by default)
+#  Blocks the whole lgtvcommon.com domain. Wider ad removal,
+#  but can blank out LG Home thumbnails/previews.
+#  Uncomment only if Tier 1-3 is not enough.
+# ------------------------------------------------------------
+# 0.0.0.0 lgtvcommon.com
